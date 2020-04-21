@@ -6,4 +6,5 @@ import com.udemy.angular.entities.User;
 
 public interface IUser extends JpaRepository<User, Long> {
 
+	User findByMailAndPassword(String mail, String password);
 }
