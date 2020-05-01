@@ -1,6 +1,7 @@
 package com.udemy.angular.controlleur;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ public class AnimeController {
 	}
 	
 	/*rechercher anime avec id*/
-	@GetMapping ("/{idanime}")
+	@GetMapping ("/{idAnime}")
 	public ResponseEntity findCharcterById(@PathVariable(name="idAnime") Long idAnime) {
 		if(idAnime == null) {
 			return ResponseEntity.badRequest().body("cannot find anime avec id null");
@@ -41,6 +42,23 @@ public class AnimeController {
 			return ResponseEntity.badRequest().body("cannot create character with empty fields");
 		}
 		return ResponseEntity.ok(charcterRepository.save(character));
+	}
+	
+	/*suppression*/
+	@DeleteMapping("/{idAnime}")
+	public ResponseEntity deleteCharacter(@PathVariable (name="idAnime") Long idCharacter) {
+		if( idCharacter == null) {
+			return ResponseEntity.badRequest().body("cannot remove character with null ID");
+		}
+		
+		AnimeCharacter character = charcterRepository.getOne(idCharacter);
+		
+		 if(character == null) {
+			
+			 return ResponseEntity.notFound().build();
+		 }
+		charcterRepository.delete(character);
+		return ResponseEntity.ok("Character removed with success ");
 	}
 	
 }
