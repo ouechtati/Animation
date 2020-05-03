@@ -1,5 +1,6 @@
 package com.udemy.angular.controlleur;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,10 @@ import com.udemy.angular.entities.AnimeCharacter;
 import com.udemy.angular.repositories.IanimeCharcacter;
 
 @RestController
-@RequestMapping("/v1/anime")
-public class AnimeController {
+@RequestMapping("/v1/characters")
+public class CharactersController {
 
+	@Autowired
 	private IanimeCharcacter charcterRepository;
 	
 	/*rechercher d'un anime */
@@ -25,12 +27,12 @@ public class AnimeController {
 	}
 	
 	/*rechercher anime avec id*/
-	@GetMapping ("/{idAnime}")
-	public ResponseEntity findCharcterById(@PathVariable(name="idAnime") Long idAnime) {
-		if(idAnime == null) {
+	@GetMapping ("/{idCharacter}")
+	public ResponseEntity findCharcterById(@PathVariable(name="idCharacter") Long idCharacter) {
+		if(idCharacter == null) {
 			return ResponseEntity.badRequest().body("cannot find anime avec id null");
 		}
-		AnimeCharacter character= charcterRepository.getOne(idAnime);
+		AnimeCharacter character= charcterRepository.getOne(idCharacter);
 		if(character == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -45,8 +47,8 @@ public class AnimeController {
 	}
 	
 	/*suppression*/
-	@DeleteMapping("/{idAnime}")
-	public ResponseEntity deleteCharacter(@PathVariable (name="idAnime") Long idCharacter) {
+	@DeleteMapping("/{idCharacter}")
+	public ResponseEntity deleteCharacter(@PathVariable (name="idCharacter") Long idCharacter) {
 		if( idCharacter == null) {
 			return ResponseEntity.badRequest().body("cannot remove character with null ID");
 		}
@@ -59,6 +61,23 @@ public class AnimeController {
 		 }
 		charcterRepository.delete(character);
 		return ResponseEntity.ok("Character removed with success ");
+	}
+	
+	@GetMapping("/share/{idCharacter}/{isShared}")
+	public ResponseEntity shareCharacter(@PathVariable (name="idCharacter") Long  idCharacter,@PathVariable(name="isShared") boolean isShared) {
+		if( idCharacter == null) {
+			return ResponseEntity.badRequest().body("cannot remove character with null ID");
+		}
+		
+		AnimeCharacter character = charcterRepository.getOne(idCharacter);
+		
+		 if(character == null) {
+			
+			 return ResponseEntity.notFound().build();
+		 }
+		 character.setShared(isShared);
+		return ResponseEntity.ok(charcterRepository.save(character));
+		
 	}
 	
 }
