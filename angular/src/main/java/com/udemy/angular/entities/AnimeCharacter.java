@@ -17,7 +17,7 @@ public class AnimeCharacter implements Serializable {
     @GeneratedValue
     private Long idCharacter;
 
-    private String characterName;
+    private String CharacterName;
 
     private String legend;
 
@@ -41,22 +41,30 @@ public class AnimeCharacter implements Serializable {
     }
 
     public Long getIdCharacter() {
-        return idCharacter;
-    }
+		return idCharacter;
+	}
 
-    public void setIdCharacter(Long idCharacter) {
-        this.idCharacter = idCharacter;
-    }
 
-    public String getCharacterName() {
-        return characterName;
-    }
 
-    public void setCharacterName(String characterName) {
-        this.characterName = characterName;
-    }
+	public void setIdCharacter(Long idCharacter) {
+		this.idCharacter = idCharacter;
+	}
 
-    public String getCategory() {
+
+
+	public String getCharacterName() {
+		return CharacterName;
+	}
+
+
+
+	public void setCharacterName(String characterName) {
+		CharacterName = characterName;
+	}
+
+
+
+	public String getCategory() {
         return category;
     }
 
